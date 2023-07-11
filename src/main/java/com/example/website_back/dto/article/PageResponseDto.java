@@ -8,19 +8,27 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 @Builder
-public class EntryPageResponseDto {
+public class PageResponseDto {
     private Long articleId;
+    private String articleType;
     private String articleTitle;
     private String memberNickname;
     private String createdAt;
+    private int articleLikes;
+    private int articleComments;
+    private int articleReads;
 
 
-    public static EntryPageResponseDto of(Article article) {
-        return EntryPageResponseDto.builder()
+    public static PageResponseDto of(Article article, int likes, int comments) {
+        return PageResponseDto.builder()
                 .articleId(article.getId())
+                .articleType(article.getType())
                 .articleTitle(article.getTitle())
                 .memberNickname(article.getMember().getNickname())
                 .createdAt(article.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .articleLikes(likes)
+                .articleComments(comments)
+                .articleReads(article.getNumReads())
                 .build();
     }
 }

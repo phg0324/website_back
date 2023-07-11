@@ -13,25 +13,27 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 @Builder
 
-public class EntryArticleResponseDto {
+public class ArticleResponseDto {
     private Long articleId;
-    private Long mainId;
+    private String articleType;
     private String memberNickname;
     private String articleTitle;
     private String articleBody;
     private String createdAt;
     private String updatedAt;
+    private int articleReads;
     private boolean isWritten;
 
-    public static EntryArticleResponseDto of(Article article, boolean bool) {
-        return EntryArticleResponseDto.builder()
+    public static ArticleResponseDto of(Article article, boolean bool) {
+        return ArticleResponseDto.builder()
                 .articleId(article.getId())
-                .mainId(article.getMainId())
+                .articleType(article.getType())
                 .memberNickname(article.getMember().getNickname())
                 .articleTitle(article.getTitle())
                 .articleBody(article.getBody())
                 .createdAt(article.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .updatedAt(article.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .articleReads(article.getNumReads())
                 .isWritten(bool)
                 .build();
     }

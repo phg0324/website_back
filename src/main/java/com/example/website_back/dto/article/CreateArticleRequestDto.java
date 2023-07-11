@@ -1,6 +1,10 @@
 package com.example.website_back.dto.article;
 
-public class CreateEntryArticleRequestDto {
+import lombok.Getter;
+
+@Getter
+public class CreateArticleRequestDto {
+    private String type;
     private String title;
     private String body;
 }
