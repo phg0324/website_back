@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Recommand {
+public class Recommend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +23,7 @@ public class Recommand {
     @JoinColumn(name = "article_id")
     private Article article;
 
-    public Recommand(Member member, Article article){
+    public Recommend(Member member, Article article){
         this.member = member;
         this.article = article;
 

@@ -17,15 +17,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
-public class AArticleService {
+public class ArticleService {
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
 
     public ArticleResponseDto oneArticle(Long id){
         Article article = articleRepository.findById(id).orElseThrow(() -> new RuntimeException("글이 없음"));
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        int currentReads = article.getNumReads();
+        article.setNumReads(currentReads+1);
         if (authentication == null || authentication.getPrincipal() == "anonymousUser"){
             return ArticleResponseDto.of(article, false);
         } else{
@@ -34,8 +36,14 @@ public class AArticleService {
             return ArticleResponseDto.of(article, result);
         }
     }
-    public Page<PageResponseDto> pageArticle(int pageNum){
-        return articleRepository.searchAll(PageRequest.of(pageNum -1, 20));
+    public Page<PageResponseDto> pageArticle(int pageNum, String pageType, String sort){
+        if (pageType.equals("전체")){
+            return articleRepository.searchAll(PageRequest.of(pageNum -1, 20) ,sort);
+        }
+        else{
+            return articleRepository.searchType(PageRequest.of(pageNum -1, 20), pageType, sort);
+        }
+
     }
 
     @Transactional
@@ -46,9 +54,9 @@ public class AArticleService {
         return ArticleResponseDto.of(articleRepository.save(article), true);
     }
     @Transactional
-    public ArticleResponseDto changeArticle(Long id, String title, String body){
+    public ArticleResponseDto changeArticle(Long id, String title, String type, String body){
         Article article = authorizationArticleWriter(id);
-        return ArticleResponseDto.of(articleRepository.save(Article.changeArticle(article, title, body)), true);
+        return ArticleResponseDto.of(articleRepository.save(Article.changeArticle(article, title,type, body)), true);
     }
 
     @Transactional

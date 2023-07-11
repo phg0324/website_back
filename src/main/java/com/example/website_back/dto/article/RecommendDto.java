@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 
-public class RecommandDto {
-    private int recommandNum;
-    private boolean isRecommanded;
+public class RecommendDto {
+    private int recommendNum;
+    private boolean isRecommended;
 
-    public static RecommandDto noOne(){
-        return RecommandDto.builder()
+    public static RecommendDto noOne(){
+        return RecommendDto.builder()
                 .recommendNum(0)
                 .isRecommended(false)
                 .build();
